@@ -1,5 +1,8 @@
 use std::io::Read;
 
+// 10mb
+const THRESHOLD: usize = 10 * 1024 * 1024;
+
 fn main() {
     let mut msi = msi::open("Setup.msi").unwrap();
     let streams = msi.streams();
@@ -19,5 +22,9 @@ fn main() {
         total += n;
         let total_mb = total as f64 / 1024.0 / 1024.0;
         println!("read: {total_mb:.2} - chunk: {n}");
+
+        if total > THRESHOLD {
+            break;
+        }
     }
 }
